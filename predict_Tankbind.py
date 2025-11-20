@@ -307,7 +307,7 @@ for protein_compound_pair, group in chosen.groupby(['protein_name', 'compound_na
                     native_coords = None
                 else:
                     # Remove hydrogens from native molecule to match RDKit molecule
-                    # IMPORTANT: We extract coordinates from the NATIVE ligand conformer (native_conf_noH),
+                    # We extract coordinates from the NATIVE ligand conformer (native_conf_noH),
                     # which contains the true crystal structure coordinates. The RDKit molecule is ONLY
                     # used as a template for atom ordering - it does NOT contain native coordinates.
                     # Create a copy first to preserve the original
@@ -340,9 +340,7 @@ for protein_compound_pair, group in chosen.groupby(['protein_name', 'compound_na
                                     # Same molecule - match atom ordering using RDKit template
                                     # NOTE: rdkit_mol_template does NOT have native coordinates,
                                     # it's only used to determine atom ordering via GetSubstructMatch
-                                    # Use GetSubstructMatch to find matching atoms
-                                    # For RMSD to be correct, we need: RDKit atom j → Native atom index
-                                    # So we use reverse match: native_mol_noH.GetSubstructMatch(rdkit_mol_template)
+                                    # we use reverse match: native_mol_noH.GetSubstructMatch(rdkit_mol_template)
                                     # This gives match_reverse[j] = native atom index for RDKit atom j
                                     match_reverse = native_mol_noH.GetSubstructMatch(rdkit_mol_template)
                                     if len(match_reverse) == rdkit_mol_template.GetNumAtoms() == native_mol_noH.GetNumAtoms():
@@ -463,8 +461,6 @@ for protein_compound_pair, group in chosen.groupby(['protein_name', 'compound_na
         logging.info(f"  {pocket_name}: Generated {len(info)} poses, affinity = {affinity:.3f}")
     
     # Rank ALL poses globally by affinity (higher affinity = better binding prediction)
-    # This is the standard approach: rank all poses by docking score (binding affinity)
-    # Higher affinity means the model predicts stronger binding at this site
     # Use loss as tie-breaker (lower loss = better pose optimization)
     # Note: All poses from the same binding site have the same affinity,
     # so poses from higher-affinity sites will rank higher
