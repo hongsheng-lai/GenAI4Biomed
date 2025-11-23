@@ -305,7 +305,7 @@ for protein_compound_pair, group in chosen.groupby(['protein_name', 'compound_na
         
         # Verify: Check if predicted coordinates have hydrogens or not
         # dataset[idx].coords comes from compound_dict which was created from RDKit molecule
-        # RDKit molecule should have NO hydrogens (generate_conformation removes them at line 290)
+        # RDKit molecule should have NO hydrogens 
         n_atoms_in_coords = coords.shape[0]
         n_atoms_in_rdkit_mol = mol.GetNumAtoms() if mol is not None else None
         if mol is not None:
@@ -337,9 +337,8 @@ for protein_compound_pair, group in chosen.groupby(['protein_name', 'compound_na
         logging.info(f"  {pocket_name}: Generated {len(info)} poses, affinity = {affinity:.3f}")
     
     # Rank ALL poses globally by affinity (higher affinity = better binding prediction)
-    # This is the standard approach: rank all poses by docking score (binding affinity)
     # Higher affinity means the model predicts stronger binding at this site
-    # Use loss as tie-breaker (lower loss = better pose optimization)
+    # lower loss = better pose optimization
     # Note: All poses from the same binding site have the same affinity,
     # so poses from higher-affinity sites will rank higher
     all_poses_sorted = sorted(all_poses, key=lambda x: (-x['affinity'], x['loss']))
