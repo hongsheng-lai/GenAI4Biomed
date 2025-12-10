@@ -4,23 +4,6 @@ import pandas as pd
 import numpy as np
 
 def compute_coordinate_RMSD(predicted_coords, true_coords, use_kabsch=True):
-    """
-    Compute coordinate-based RMSD between predicted and true coordinates with proper alignment.
-    This function aligns the structures using Kabsch algorithm before calculating RMSD.
-    
-    Args:
-        predicted_coords: [n_atoms, 3] predicted coordinates (list or numpy array)
-        true_coords: [n_atoms, 3] true/native coordinates (list or numpy array)
-        use_kabsch: If True, align coordinates using Kabsch algorithm (recommended)
-    
-    Returns:
-        rmsd: RMSD value in Angstroms (float)
-    
-    Note:
-        This is the standard way to calculate RMSD for molecular docking.
-        It removes translational and rotational differences before comparing structures.
-        Uses numpy (CPU only, no GPU required).
-    """
     # Convert to numpy arrays if needed
     pred = np.array(predicted_coords, dtype=np.float64)
     true = np.array(true_coords, dtype=np.float64)
@@ -66,10 +49,6 @@ def extract_protein_list(result_folder):
 
 
 def RMSD_calculation(predicted_sdf_folder, true_sdf_folder, save_path, save_rdkit_path):
-    """
-    Main function for RMSD calculation.
-    Extracts protein list from SDF files in the folder.
-    """
     rmsd_list = []
     pose_rank_for_rmsd = []
     protein_list = extract_protein_list(predicted_sdf_folder)
@@ -153,7 +132,6 @@ def RMSD_calculation(predicted_sdf_folder, true_sdf_folder, save_path, save_rdki
 
 
 if __name__ == "__main__":
-    # Example usage
     predicted_sdf_folder = "/ocean/projects/cis250160p/wli27/TankBind/tankbind/PL_results_save_sdf/result"
     true_sdf_folder = "/ocean/projects/cis250160p/wli27/P-L"
     save_path = "/ocean/projects/cis250160p/wli27/TankBind/tankbind/PL_results_save_sdf"

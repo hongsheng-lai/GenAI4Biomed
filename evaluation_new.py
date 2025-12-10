@@ -57,12 +57,6 @@ def select_affinity_by_pose_rank(df_affinity, best_pose_rank_list, protein_name_
     return df_best_affinity
 
 def read_index_affinity(filename):
-    """
-    Read INDEX_core_data.2016 file and extract affinity data.
-    
-    Returns:
-        pandas.DataFrame with columns: protein_name, neg_log_kd_ki
-    """
     data = []
     
     with open(filename, 'r') as f:
@@ -98,10 +92,6 @@ def read_index_affinity(filename):
 #    affinity = df_affinity['affinity'].sorted
 
 def calculate_PCC_by_affinity(df_affinity, df_true_affinity):
-    """
-    Calculate Pearson Correlation Coefficient between predicted and true affinities.
-    Ensures alignment by protein_name through merge and sort.
-    """
     # Merge dataframes by protein_name to align predictions with true values
     merged_df = df_affinity.merge(df_true_affinity, on='protein', how='inner')
     
@@ -119,10 +109,6 @@ def calculate_PCC_by_affinity(df_affinity, df_true_affinity):
     return PCC, p_value
 
 def calculate_SCC_by_affinity(df_affinity, df_true_affinity):
-    """
-    Calculate Spearman Correlation Coefficient between predicted and true affinities.
-    Ensures alignment by protein_name through merge and sort.
-    """
     # Merge dataframes by protein_name to align predictions with true values
     merged_df = df_affinity.merge(df_true_affinity, on='protein', how='inner')
     
