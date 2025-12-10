@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # # Overview
 # Training evaluation script for the whole dataset
 # works on all protein-ligand pairs with one epoch training
@@ -37,7 +34,7 @@ for root, dirs, files in os.walk(data_path):
             ligand_file_paths[pdb_id] = ligandFile
             smiles = Chem.MolToSmiles(Chem.MolFromMolFile(ligandFile))
             rdkitMolFile = f"{save_rdkit_path}/{file.replace('_ligand.sdf', '_mol_from_rdkit.sdf')}"
-            shift_dis = 0   # for visual only, could be any number, shift the ligand away from the protein.
+            shift_dis = 0   
             generate_sdf_from_smiles_using_rdkit(smiles, rdkitMolFile, shift_dis=shift_dis)
 
 # # get protein feature
@@ -140,7 +137,7 @@ dataset = TankBindDataSet_custom(dataset_path, data=info, protein_dict=protein_d
 
 import logging
 from torch_geometric.loader import DataLoader
-from tqdm import tqdm    # pip install tqdm if fails.
+from tqdm import tqdm   
 from model import get_model
 import time
 # from utils import *
@@ -174,7 +171,7 @@ batch_times = []
 batch_memories = []  # Track memory per batch
 
 
-criterion = torch.nn.MSELoss()  # since you're predicting distance map
+criterion = torch.nn.MSELoss()  
 
 timestamp = "train_run"
 

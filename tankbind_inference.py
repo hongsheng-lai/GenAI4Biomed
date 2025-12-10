@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # # Overview
 # This script inference the whole dataset and save inference time and peak gpu memory for each samples. In addition, It will save all the top5 poses for each pair.
 
@@ -36,7 +33,7 @@ for root, dirs, files in os.walk(data_path):
             ligand_file_paths[pdb_id] = ligandFile
             smiles = Chem.MolToSmiles(Chem.MolFromMolFile(ligandFile))
             rdkitMolFile = f"{save_rdkit_path}/{file.replace('_ligand.sdf', '_mol_from_rdkit.sdf')}"
-            shift_dis = 0   # for visual only, could be any number, shift the ligand away from the protein.
+            shift_dis = 0  
             generate_sdf_from_smiles_using_rdkit(smiles, rdkitMolFile, shift_dis=shift_dis)
 
 # # get protein feature
@@ -100,7 +97,7 @@ os.system(cmd)
 
 info = []
 for pdb in pdb_list:
-    # Only pair protein with its own ligand (same PDB ID) - self-docking
+    # self-docking
     if pdb in compound_dict:
         compound_name = pdb  # Use the same PDB ID for the compound
         # use protein center as the block center.
@@ -264,11 +261,11 @@ logging.info(f"{'='*50}\n")
 
 
 # # from predicted interaction distance map to sdf
-# # WITH TOP-5 SUCCESS RATE CALCULATION and RMSA calculation.
+
 
 
 from generation_utils import get_LAS_distance_constraint_mask, get_info_pred_distance, write_with_new_coords, compute_coordinate_RMSD
-# device is already set above, using same device
+
 
 result_folder = f'./PL_results_save_sdf/result/'
 os.system(f'mkdir -p {result_folder}')
@@ -305,7 +302,7 @@ for protein_compound_pair, group in chosen.groupby(['protein_name', 'compound_na
         
         # Verify: Check if predicted coordinates have hydrogens or not
         # dataset[idx].coords comes from compound_dict which was created from RDKit molecule
-        # RDKit molecule should have NO hydrogens 
+        # RDKit molecule should have no hydrogens 
         n_atoms_in_coords = coords.shape[0]
         n_atoms_in_rdkit_mol = mol.GetNumAtoms() if mol is not None else None
         if mol is not None:
